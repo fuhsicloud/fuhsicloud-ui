@@ -15,6 +15,7 @@ export interface CurrentUser {
   }[];
   userid?: string;
   unreadCount?: number;
+  accessToken?: string;
 }
 
 export interface UserModelState {

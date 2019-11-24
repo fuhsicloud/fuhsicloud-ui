@@ -55,6 +55,7 @@ export default {
     },
     address: '西湖区工专路 77 号',
     phone: '0752-268888888',
+    accessToken: Date.parse(new Date().toString()),
   },
   // GET POST 可省略
   'GET /api/users': [
