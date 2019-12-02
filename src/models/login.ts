@@ -2,13 +2,14 @@ import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { Effect } from 'dva';
 import { stringify } from 'querystring';
-
+import Cookie from 'js-cookie';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
+import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '@/utils/utils';
 
 export interface StateType {
-  status?: 'ok' | 'error';
+  status?: '0' | '-1';
   type?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
@@ -36,12 +37,30 @@ const Model: LoginModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
+      const responseData = {
+        currentAuthority: 'admin',
+        status: 'error',
+        type: 'account',
+        message: '',
+      };
+
       // Login successfully
-      if (response.status === 'ok') {
+      if (response && response.code === 0) {
+        responseData.status = 'success';
+        yield put({
+          type: 'changeLoginStatus',
+          payload: responseData,
+        });
+        Cookie.set("namespace", response.data.namespaces[0]);
+        Cookie.set("username", response.data.username);
+        Cookie.set("email", response.data.email);
+        //Cookie.set("Authorization", response.data.token);
+        //Cookie.set("authorization", response.data.token);
+        localStorage.setItem('authorization', response.data.token);
+        localStorage.setItem('username', response.data.username);
+        localStorage.setItem('email', response.data.email);
+        reloadAuthorized();
+
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -58,6 +77,12 @@ const Model: LoginModelType = {
           }
         }
         yield put(routerRedux.replace(redirect || '/'));
+      } else {
+        responseData.message = response.error;
+        yield put({
+          type: 'changeLoginStatus',
+          payload: responseData,
+        });
       }
     },
 
@@ -65,18 +90,38 @@ const Model: LoginModelType = {
       yield call(getFakeCaptcha, payload);
     },
     *logout(_, { put }) {
-      const { redirect } = getPageQuery();
-      // redirect
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
+      Cookie.set("username", "");
+      Cookie.set("email", "");
+      Cookie.set("authorization", "");
+
+
+
+      try {
+        const { redirect } = getPageQuery();
+        // redirect
+        if (window.location.pathname !== '/user/login' && !redirect) {
+          yield put(
+            routerRedux.replace({
+              pathname: '/user/login',
+              search: stringify({
+                redirect: window.location.href,
+              }),
             }),
-          }),
-        );
+          );
+        }
+      } finally {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            status: false,
+            currentAuthority: 'guest',
+          },
+        });
+        reloadAuthorized();
+        yield put(routerRedux.push('/user/login'));
       }
+
+      window.location.reload();
     },
   },
 
@@ -87,6 +132,7 @@ const Model: LoginModelType = {
         ...state,
         status: payload.status,
         type: payload.type,
+        message: payload.message
       };
     },
   },
