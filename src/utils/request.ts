@@ -52,11 +52,33 @@ const errorHandler = (error: { response: Response }): Response => {
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-    Accept: 'application/json',
-    Authorization: localStorage.getItem('authorization'),
-  },
 });
+
+// request拦截器, 改变url 或 options.
+request.interceptors.request.use(async (url, options) => {
+
+  let authorization = localStorage.getItem("authorization");
+  if (authorization) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': authorization
+    };
+    return (
+      {
+        url: url,
+        options: { ...options, headers: headers },
+      }
+    );
+  } else {
+    return (
+      {
+        url: url,
+        options: { ...options },
+      }
+    );
+  }
+
+})
 
 export default request;

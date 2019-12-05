@@ -59,7 +59,6 @@ const Model: LoginModelType = {
         localStorage.setItem('authorization', response.data.token);
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('email', response.data.email);
-        reloadAuthorized();
 
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -76,6 +75,7 @@ const Model: LoginModelType = {
             return;
           }
         }
+        reloadAuthorized();
         yield put(routerRedux.replace(redirect || '/'));
       } else {
         responseData.message = response.error;
