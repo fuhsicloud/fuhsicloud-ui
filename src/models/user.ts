@@ -4,18 +4,27 @@ import { Reducer } from 'redux';
 import { queryCurrent, query as queryUsers } from '@/services/user';
 
 export interface CurrentUser {
-  avatar?: string;
-  name?: string;
-  title?: string;
-  group?: string;
-  signature?: string;
-  tags?: {
-    key: string;
-    label: string;
-  }[];
-  userid?: string;
-  unreadCount?: number;
-  accessToken?: string;
+  attrs?: string;
+  city?: string;
+  department?: string;
+  email?: string;
+  id?: number;
+  namespaces?:string[];
+  notifyCount?: number;
+  openid?: string;
+  phone?: string;
+  roles?: {
+    Permissions: string;
+    created_at: string;
+    description: string;
+    id: number;
+    level: number;
+    name: string;
+    state: number;
+    updated_at: string;
+ }[];
+  state?: number;
+  username?: string;
 }
 
 export interface UserModelState {

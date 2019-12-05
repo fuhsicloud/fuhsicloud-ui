@@ -4,7 +4,6 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
-import NProgress from 'nprogress';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -49,6 +48,7 @@ const errorHandler = (error: { response: Response }): Response => {
 /**
  * 配置request请求时的默认参数
  */
+console.log(localStorage.getItem('authorization'))
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
@@ -56,13 +56,13 @@ const request = extend({
 
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use(async (url, options) => {
-
-  let authorization = localStorage.getItem("authorization");
-  if (authorization) {
+  let c_authorization = localStorage.getItem('authorization');
+  console.log('c_authorization'+c_authorization)
+  if (c_authorization) {
     const headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json;charset=utf-8',
       'Accept': 'application/json',
-      'Authorization': authorization
+      'Authorization': c_authorization
     };
     return (
       {
@@ -78,7 +78,6 @@ request.interceptors.request.use(async (url, options) => {
       }
     );
   }
-
 })
 
 export default request;
