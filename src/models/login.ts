@@ -46,6 +46,7 @@ const Model: LoginModelType = {
 
       // Login successfully
       if (response && response.code === 0) {
+        console.log(222222222222222222)
         responseData.status = 'success';
         yield put({
           type: 'changeLoginStatus',
@@ -54,8 +55,6 @@ const Model: LoginModelType = {
         Cookie.set("namespace", response.data.namespaces[0]);
         Cookie.set("username", response.data.username);
         Cookie.set("email", response.data.email);
-        //Cookie.set("Authorization", response.data.token);
-        //Cookie.set("authorization", response.data.token);
         localStorage.setItem('authorization', response.data.token);
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('email', response.data.email);
