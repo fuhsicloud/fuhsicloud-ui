@@ -7,6 +7,8 @@ import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '@/utils/utils';
+import { CurrentUser } from './user';
+import { queryCurrent, query as queryUsers } from '@/services/user';
 
 export interface StateType {
   status?: '0' | '-1';
@@ -59,6 +61,15 @@ const Model: LoginModelType = {
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('email', response.data.email);
 
+        console.log(111111111111111111111111)
+
+        const responseUser = yield call(queryCurrent);
+        console.log(responseUser.data)
+        yield put({
+          type: 'user/saveCurrentUser',
+          payload: responseUser.data,
+        });
+
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -74,6 +85,7 @@ const Model: LoginModelType = {
             return;
           }
         }
+
         reloadAuthorized();
         yield put(routerRedux.replace(redirect || '/'));
       } else {
