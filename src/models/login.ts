@@ -48,7 +48,6 @@ const Model: LoginModelType = {
 
       // Login successfully
       if (response && response.code === 0) {
-        console.log(222222222222222222)
         responseData.status = 'success';
         yield put({
           type: 'changeLoginStatus',
@@ -60,8 +59,6 @@ const Model: LoginModelType = {
         localStorage.setItem('authorization', response.data.token);
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('email', response.data.email);
-
-        console.log(111111111111111111111111)
 
         const responseUser = yield call(queryCurrent);
         console.log(responseUser.data)

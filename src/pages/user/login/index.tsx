@@ -46,7 +46,6 @@ class Login extends Component<LoginProps, LoginState> {
   handleSubmit = (err: unknown, values: LoginParamsType) => {
     const { type } = this.state;
     if (!err) {
-      console.log(666666)
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',
@@ -55,13 +54,6 @@ class Login extends Component<LoginProps, LoginState> {
           type,
         },
       });
-      // dispatch({
-      //   type: 'user/fetchCurrent',
-      //   payload: {
-      //     ...values,
-      //     type,
-      //   },
-      // });
     }
   };
 
