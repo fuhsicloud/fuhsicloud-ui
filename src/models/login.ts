@@ -92,7 +92,9 @@ const Model: LoginModelType = {
       Cookie.set("username", "");
       Cookie.set("email", "");
       Cookie.set("authorization", "");
-
+      localStorage.setItem('authorization', "");
+      localStorage.setItem('username', "");
+      localStorage.setItem('email', "");
 
 
       try {
