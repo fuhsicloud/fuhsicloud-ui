@@ -7,8 +7,7 @@ import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '@/utils/utils';
-import { CurrentUser } from './user';
-import { queryCurrent, query as queryUsers } from '@/services/user';
+import { queryCurrent } from '@/services/user';
 
 export interface StateType {
   status?: '0' | '-1';
@@ -60,12 +59,20 @@ const Model: LoginModelType = {
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('email', response.data.email);
 
-        const responseUser = yield call(queryCurrent);
-        console.log(responseUser.data)
-        yield put({
-          type: 'user/saveCurrentUser',
-          payload: responseUser.data,
-        });
+        var info = localStorage.getItem('info')
+        if(info === '' || info == null || info == undefined || info === 'undefined'){
+          const responseUser = yield call(queryCurrent);
+          localStorage.setItem('info', JSON.stringify(responseUser.data));
+          yield put({
+            type: 'user/saveCurrentUser',
+            payload: responseUser.data,
+          });
+        }else{
+          yield put({
+            type: 'user/saveCurrentUser',
+            payload: JSON.parse(info),
+          });
+        }
 
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();

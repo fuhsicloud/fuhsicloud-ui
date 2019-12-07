@@ -60,11 +60,20 @@ const UserModel: UserModelType = {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response.data,
-      });
+      var info = localStorage.getItem('info')
+      if(info === '' || info == null || info == undefined || info === 'undefined'){
+        const responseUser = yield call(queryCurrent);
+        localStorage.setItem('info', JSON.stringify(responseUser.data));
+        yield put({
+          type: 'saveCurrentUser',
+          payload: responseUser.data,
+        });
+      }else{
+        yield put({
+          type: 'saveCurrentUser',
+          payload: JSON.parse(info),
+        });
+      }
     },
   },
 
