@@ -1,8 +1,8 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { addRule, queryNamespace, removeRule, updateRule } from '../services/namespace';
+import { addRule, queryMember, removeRule, updateRule } from '../services/member';
 
-import { TableListData } from '../pages/system/namespace/data';
+import { TableListData } from '../pages/system/member/data';
 
 export interface StateType {
   data: TableListData;
@@ -28,7 +28,7 @@ export interface ModelType {
 }
 
 const Model: ModelType = {
-  namespace: 'systemAndnamespace',
+  namespace: 'systemAndmember',
 
   state: {
     data: {
@@ -39,7 +39,7 @@ const Model: ModelType = {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryNamespace, payload);
+      const response = yield call(queryMember, payload);
       yield put({
         type: 'save',
         payload: response.data,
