@@ -165,8 +165,8 @@ class Namespace extends Component<
       },
       {
         title: '描述信息',
-        dataIndex: 'description',
-        key: 'description',
+        dataIndex: 'display_name',
+        key: 'display_name',
       },
       {
         title: '上次更新时间',
