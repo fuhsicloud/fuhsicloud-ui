@@ -7,9 +7,9 @@ export interface Member {
 export interface CardListItemDataType {
   id: string;
   owner: string;
-  title: string;
+  name: string;
   avatar: string;
-  cover: string;
+  display_name: string;
   status: 'normal' | 'exception' | 'active' | 'success';
   percent: number;
   logo: string;
@@ -17,8 +17,7 @@ export interface CardListItemDataType {
   body?: any;
   updatedAt: number;
   createdAt: number;
-  subDescription: string;
-  description: string;
+  desc: string;
   activeUser: number;
   newUser: number;
   star: number;

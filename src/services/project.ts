@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
-export async function queryFakeList(params: { count: number }) {
-  return request('/api/fake_list', {
+export async function queryProjectList(params: { count: number }) {
+  return request('/api/project/default', {
     params,
   });
 }

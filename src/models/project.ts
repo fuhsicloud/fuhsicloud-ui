@@ -2,7 +2,7 @@ import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
 import { CardListItemDataType } from '../pages/app/project/data';
-import { queryFakeList } from '../services/project';
+import { queryProjectList } from '../services/project';
 
 export interface StateType {
   list: CardListItemDataType[];
@@ -33,10 +33,10 @@ const Model: ModelType = {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryFakeList, payload);
+      const response = yield call(queryProjectList, payload);
       yield put({
         type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
+        payload: response.code===0 && response.data.list ? response.data.list : [],
       });
     },
   },

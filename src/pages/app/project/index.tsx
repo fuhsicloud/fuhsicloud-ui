@@ -58,10 +58,9 @@ class Project extends Component<
     const content = (
       <div className={styles.pageHeaderContent}>
         <p>
-          段落示意：蚂蚁金服务设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，
-          提供跨越设计与开发的体验解决方案。
+          应用按照项目区分，一个项目源码对应一个应用，实现源码编译，打包镜像，推送镜像等功能，支持Java，Go 等语言项目，Java支持Maven编译方式。
         </p>
-        <div className={styles.contentLink}>
+        {/* <div className={styles.contentLink}>
           <a>
             <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" />{' '}
             快速开始
@@ -74,7 +73,7 @@ class Project extends Component<
             <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" />{' '}
             产品文档
           </a>
-        </div>
+        </div> */}
       </div>
     );
 
@@ -93,7 +92,7 @@ class Project extends Component<
           <List<Partial<CardListItemDataType>>
             rowKey="id"
             loading={loading}
-            grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+            grid={{ gutter: 24, lg: 4, md: 2, sm: 1, xs: 1 }}
             dataSource={[nullData, ...list]}
             renderItem={item => {
               if (item && item.id) {
@@ -102,14 +101,14 @@ class Project extends Component<
                     <Card
                       hoverable
                       className={styles.card}
-                      actions={[<a key="option1">操作一</a>, <a key="option2">操作二</a>]}
+                      actions={[<a key="option1">操作一</a>, <a type="danger" key="option2">下线</a>]}
                     >
                       <Card.Meta
-                        avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
-                        title={<a>{item.title}</a>}
+                        avatar={<img alt="" className={styles.cardAvatar} src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
+                        title={<a>{item.name}</a>}
                         description={
                           <Paragraph className={styles.item} ellipsis={{ rows: 3 }}>
-                            {item.description}
+                            {item.display_name}
                           </Paragraph>
                         }
                       />
@@ -120,7 +119,7 @@ class Project extends Component<
               return (
                 <List.Item>
                   <Button type="dashed" className={styles.newButton}>
-                    <Icon type="plus" /> 新增产品
+                    <Icon type="plus" /> 新增项目
                   </Button>
                 </List.Item>
               );
