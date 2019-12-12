@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 import Link from 'umi/link';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { Icon, Result, Button } from 'antd';
+import { Result, Button } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 
 import Authorized from '@/utils/Authorized';
@@ -67,26 +67,26 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
 const defaultFooterDom = (
   <DefaultFooter
     copyright="2019 伏羲云平台"
-    // links={[
-    //   {
-    //     key: 'Ant Design Pro',
-    //     title: 'Ant Design Pro',
-    //     href: 'https://pro.ant.design',
-    //     blankTarget: true,
-    //   },
-    //   {
-    //     key: 'github',
-    //     title: <Icon type="github" />,
-    //     href: 'https://github.com/ant-design/ant-design-pro',
-    //     blankTarget: true,
-    //   },
-    //   {
-    //     key: 'Ant Design',
-    //     title: 'Ant Design',
-    //     href: 'https://ant.design',
-    //     blankTarget: true,
-    //   },
-    // ]}
+    links={[
+      // {
+      //   key: 'Ant Design Pro',
+      //   title: 'Ant Design Pro',
+      //   href: 'https://pro.ant.design',
+      //   blankTarget: true,
+      // },
+      // {
+      //   key: 'github',
+      //   title: <Icon type="github" />,
+      //   href: 'https://github.com/ant-design/ant-design-pro',
+      //   blankTarget: true,
+      // },
+      // {
+      //   key: 'Ant Design',
+      //   title: 'Ant Design',
+      //   href: 'https://ant.design',
+      //   blankTarget: true,
+      // },
+    ]}
   />
 );
 

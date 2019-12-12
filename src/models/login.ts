@@ -10,7 +10,7 @@ import { getPageQuery } from '@/utils/utils';
 import { queryCurrent } from '@/services/user';
 
 export interface StateType {
-  status?: '0' | '-1';
+  status?: 'success' | 'error';
   type?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
 }

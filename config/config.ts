@@ -139,21 +139,27 @@ export default {
             },
             {
               name: 'namespace',
-              icon: 'smile',
+              icon: 'appstore-o',
               path: '/system/namespace',
               component: './system/namespace',
             },
             {
               name: 'member',
-              icon: 'smile',
+              icon: 'user',
               path: '/system/member',
               component: './system/member',
             },
             {
               name: 'role',
-              icon: 'smile',
+              icon: 'usergroup-add',
               path: '/system/role',
               component: './system/role',
+            },
+            {
+              name: 'project',
+              icon: 'smile',
+              path: '/app/project',
+              component: './app/project',
             },
             {
               component: './404',
