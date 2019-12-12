@@ -116,26 +116,26 @@ export default {
               authority: ['admin'],
             },
             {
-              path: "/dashboard",
-              name: "dashboard",
-              icon: "dashboard",
+              path: '/dashboard',
+              name: 'dashboard',
+              icon: 'dashboard',
               children: [
                 {
-                  path: "/dashboard/analysis",
-                  name: "analysis",
-                  exact: true
+                  path: '/dashboard/analysis',
+                  name: 'analysis',
+                  exact: true,
                 },
                 {
-                  path: "/dashboard/monitor",
-                  name: "monitor",
-                  exact: true
+                  path: '/dashboard/monitor',
+                  name: 'monitor',
+                  exact: true,
                 },
                 {
-                  path: "/dashboard/workplace",
-                  name: "workplace",
-                  exact: true
-                }
-              ]
+                  path: '/dashboard/workplace',
+                  name: 'workplace',
+                  exact: true,
+                },
+              ],
             },
             {
               name: 'namespace',
@@ -148,6 +148,12 @@ export default {
               icon: 'smile',
               path: '/system/member',
               component: './system/member',
+            },
+            {
+              name: 'role',
+              icon: 'smile',
+              path: '/system/role',
+              component: './system/role',
             },
             {
               component: './404',

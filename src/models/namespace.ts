@@ -2,10 +2,10 @@ import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { addRule, queryNamespace, removeRule, updateRule } from '../services/namespace';
 
-import { TableListData } from '../pages/system/namespace/data';
+import { BasicListItemDataType } from '../pages/system/namespace/data';
 
 export interface StateType {
-  data: TableListData;
+  list: BasicListItemDataType[];
 }
 
 export type Effect = (
@@ -23,7 +23,7 @@ export interface ModelType {
     update: Effect;
   };
   reducers: {
-    save: Reducer<StateType>;
+    queryList: Reducer<StateType>;
   };
 }
 
@@ -31,24 +31,21 @@ const Model: ModelType = {
   namespace: 'systemAndnamespace',
 
   state: {
-    data: {
-      list: [],
-      pagination: {},
-    },
+    list: [],
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryNamespace, payload);
       yield put({
-        type: 'save',
+        type: 'queryList',
         payload: response.data,
       });
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(addRule, payload);
       yield put({
-        type: 'save',
+        type: 'queryList',
         payload: response,
       });
       if (callback) callback();
@@ -56,7 +53,7 @@ const Model: ModelType = {
     *remove({ payload, callback }, { call, put }) {
       const response = yield call(removeRule, payload);
       yield put({
-        type: 'save',
+        type: 'queryList',
         payload: response,
       });
       if (callback) callback();
@@ -64,7 +61,7 @@ const Model: ModelType = {
     *update({ payload, callback }, { call, put }) {
       const response = yield call(updateRule, payload);
       yield put({
-        type: 'save',
+        type: 'queryList',
         payload: response,
       });
       if (callback) callback();
@@ -72,10 +69,10 @@ const Model: ModelType = {
   },
 
   reducers: {
-    save(state, action) {
+    queryList(state, action) {
       return {
         ...state,
-        data: action.payload,
+        list: action.payload,
       };
     },
   },

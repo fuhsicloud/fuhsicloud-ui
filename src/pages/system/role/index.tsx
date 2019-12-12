@@ -20,7 +20,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import { findDOMNode } from 'react-dom';
 import moment from 'moment';
-import { StateType } from '../../../models/namespace';
+import { StateType } from '../../../models/role';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
 
@@ -29,35 +29,35 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Search, TextArea } = Input;
 
-interface NamespaceProps extends FormComponentProps {
-  systemAndnamespace: StateType;
+interface RoleProps extends FormComponentProps {
+  systemAndrole: StateType;
   dispatch: Dispatch<any>;
   loading: boolean;
 }
-interface NamespaceState {
+interface RoleState {
   visible: boolean;
   done: boolean;
   current?: Partial<BasicListItemDataType>;
 }
 @connect(
   ({
-    systemAndnamespace,
+    systemAndrole,
     loading,
   }: {
-    systemAndnamespace: StateType;
+    systemAndrole: StateType;
     loading: {
       models: { [key: string]: boolean };
     };
   }) => ({
-    systemAndnamespace,
-    loading: loading.models.systemAndnamespace,
+    systemAndrole,
+    loading: loading.models.systemAndrole,
   }),
 )
-class Namespace extends Component<
-  NamespaceProps,
-  NamespaceState
+class Role extends Component<
+  RoleProps,
+  RoleState
 > {
-  state: NamespaceState = { visible: false, done: false, current: undefined };
+  state: RoleState = { visible: false, done: false, current: undefined };
 
   formLayout = {
     labelCol: { span: 7 },
@@ -69,7 +69,7 @@ class Namespace extends Component<
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'systemAndnamespace/fetch',
+      type: 'systemAndrole/fetch',
       payload: {
         count: 5,
       },
@@ -118,7 +118,7 @@ class Namespace extends Component<
         done: true,
       });
       dispatch({
-        type: 'systemAndnamespace/submit',
+        type: 'systemAndrole/submit',
         payload: { id, ...fieldsValue },
       });
     });
@@ -127,20 +127,33 @@ class Namespace extends Component<
   deleteItem = (id: string) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'systemAndnamespace/submit',
+      type: 'systemAndrole/submit',
       payload: { id },
     });
   };
 
   render() {
     const {
-      systemAndnamespace: { list },
+      systemAndrole: { list },
     } = this.props;
     const {
       form: { getFieldDecorator },
     } = this.props;
 
     const { visible, done, current = {} } = this.state;
+
+    const editAndDelete = (key: string, currentItem: BasicListItemDataType) => {
+      if (key === 'edit') this.showEditModal(currentItem);
+      else if (key === 'delete') {
+        Modal.confirm({
+          title: '删除任务',
+          content: '确定删除该任务吗？',
+          okText: '确认',
+          cancelText: '取消',
+          onOk: () => this.deleteItem(currentItem.id),
+        });
+      }
+    };
 
     const modalFooter = done
       ? { footer: null, onCancel: this.handleDone }
@@ -159,31 +172,49 @@ class Namespace extends Component<
     
     const columns = [
       {
-        title: '空间名称',
+        title: '角色名称',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: '描述信息',
+        title: '角色描述',
         dataIndex: 'description',
         key: 'description',
       },
       {
-        title: '上次更新时间',
-        dataIndex: 'updated_at',
-        key: 'updated_at',
+        title: '创建时间',
+        dataIndex: 'created_at',
+        key: 'created_at',
         render: (val: string) => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
         title: '操作',
         render: (record: BasicListItemDataType) => (
           <Fragment>
-            <a onClick={() => this.showEditModal(record)}>编辑</a>
+            <a onClick={() => this.showEditModal(record)}>分配权限</a>
             <Divider type="vertical" />
+            <MoreBtn key="more" item={record} />
           </Fragment>
         ),
       },
     ];
+
+    const MoreBtn: React.FC<{
+      item: BasicListItemDataType;
+    }> = ({ item }) => (
+      <Dropdown
+        overlay={
+          <Menu onClick={({ key }) => editAndDelete(key, item)}>
+            <Menu.Item key="edit">编辑</Menu.Item>
+            <Menu.Item key="delete">删除</Menu.Item>
+          </Menu>
+        }
+      >
+        <a>
+          更多 <Icon type="down" />
+        </a>
+      </Dropdown>
+    );
 
     const getModalContent = () => {
       if (done) {
@@ -203,17 +234,17 @@ class Namespace extends Component<
       }
       return (
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label="空间名称" {...this.formLayout}>
-            {getFieldDecorator('name', {
-              rules: [{ required: true, message: '请输入空间名称' }],
+          <FormItem label="角色名称" {...this.formLayout}>
+            {getFieldDecorator('title', {
+              rules: [{ required: true, message: '请输入任务名称' }],
               initialValue: current.name,
             })(<Input placeholder="请输入" />)}
           </FormItem>
-          <FormItem {...this.formLayout} label="空间描述">
-            {getFieldDecorator('display_name', {
-              rules: [{ message: '请输入至少五个字符的空间描述！', min: 3 }],
-              initialValue: current.display_name,
-            })(<TextArea rows={4} placeholder="请输入至少三个字符" />)}
+          <FormItem {...this.formLayout} label="角色描述">
+            {getFieldDecorator('Description', {
+              rules: [{ message: '请输入至少五个字符的角色描述！', min: 5 }],
+              initialValue: current.description,
+            })(<TextArea rows={4} placeholder="请输入至少五个字符" />)}
           </FormItem>
         </Form>
       );
@@ -231,7 +262,8 @@ class Namespace extends Component<
               extra={extraContent}
             >
               <Button
-                type="primary"
+                type="dashed"
+                style={{ width: '100%', marginBottom: 8 }}
                 icon="plus"
                 onClick={this.showModal}
                 ref={component => {
@@ -263,4 +295,4 @@ class Namespace extends Component<
   }
 }
 
-export default Form.create<NamespaceProps>()(Namespace);
+export default Form.create<RoleProps>()(Role);
