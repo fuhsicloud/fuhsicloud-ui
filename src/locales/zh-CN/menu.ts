@@ -1,8 +1,9 @@
 export default {
   'menu.welcome': '欢迎',
-  'menu.namespace': '命名空间',
-  'menu.member': '用户管理',
-  'menu.role': '用户角色',
+  'menu.system': '系统管理',
+  'menu.system.namespace': '命名空间',
+  'menu.system.member': '用户管理',
+  'menu.system.role': '用户角色',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',

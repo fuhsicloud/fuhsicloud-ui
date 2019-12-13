@@ -119,7 +119,7 @@ export default {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
-              children: [
+              routes: [
                 {
                   path: '/dashboard/analysis',
                   name: 'analysis',
@@ -138,22 +138,29 @@ export default {
               ],
             },
             {
-              name: 'namespace',
-              icon: 'smile',
-              path: '/system/namespace',
-              component: './system/namespace',
-            },
-            {
-              name: 'member',
-              icon: 'smile',
-              path: '/system/member',
-              component: './system/member',
-            },
-            {
-              name: 'role',
-              icon: 'smile',
-              path: '/system/role',
-              component: './system/role',
+              path: '/system',
+              name: 'system',
+              icon: 'dashboard',
+              routes: [
+                {
+                  path: '/system/namespace',
+                  name: 'namespace',
+                  exact: true,
+                  component: './system/namespace',
+                },
+                {
+                  path: '/system/member',
+                  name: 'member',
+                  exact: true,
+                  component: './system/member',
+                },
+                {
+                  path: '/system/role',
+                  name: 'role',
+                  exact: true,
+                  component: './system/role',
+                },
+              ],
             },
             {
               component: './404',

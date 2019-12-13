@@ -31,6 +31,12 @@ const errorHandler = (error: { response: Response }): Response => {
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
+    if(status===401){
+      window.g_app._store.dispatch({
+        type: 'login/logout',
+      });
+      return;
+    }
 
     notification.error({
       message: `请求错误 ${status}: ${url}`,
@@ -57,7 +63,6 @@ const request = extend({
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use(async (url, options) => {
   let c_authorization = localStorage.getItem('authorization');
-  console.log('c_authorization'+c_authorization)
   if (c_authorization) {
     const headers = {
       'Content-Type': 'application/json;charset=utf-8',
