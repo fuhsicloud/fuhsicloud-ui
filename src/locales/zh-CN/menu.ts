@@ -4,6 +4,7 @@ export default {
   'menu.system.namespace': '命名空间',
   'menu.system.member': '用户管理',
   'menu.system.role': '用户角色',
+  'menu.project': '项目列表',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',

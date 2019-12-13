@@ -140,7 +140,7 @@ export default {
             {
               path: '/system',
               name: 'system',
-              icon: 'dashboard',
+              icon: 'appstore-o',
               routes: [
                 {
                   path: '/system/namespace',
@@ -161,6 +161,12 @@ export default {
                   component: './system/role',
                 },
               ],
+            },
+            {
+              name: 'project',
+              icon: 'smile',
+              path: '/app/project',
+              component: './app/project',
             },
             {
               component: './404',
