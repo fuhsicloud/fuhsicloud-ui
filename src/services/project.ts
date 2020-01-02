@@ -5,3 +5,10 @@ export async function queryProjectList(params: { count: number }) {
     params,
   });
 }
+
+export async function fakeSubmitProjectForm(params: any) {
+  return request('/api/forms', {
+    method: 'POST',
+    data: params,
+  });
+}

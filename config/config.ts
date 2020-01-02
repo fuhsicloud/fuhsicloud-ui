@@ -163,6 +163,12 @@ export default {
               ],
             },
             {
+              name: 'createproject',
+              icon: 'smile',
+              path: '/app/project/create',
+              component: './app/project/create',
+            },
+            {
               name: 'project',
               icon: 'smile',
               path: '/app/project',
