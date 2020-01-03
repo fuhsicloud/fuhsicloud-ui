@@ -67,7 +67,7 @@ const Step1: React.FC<Step1Props> = props => {
             rules: [
               { required: true, message: '请输入项目描述' },
             ],
-          })(<Input prefix="￥" placeholder="请输入项目描述" />)}
+          })(<Input placeholder="请输入项目描述" />)}
         </Form.Item>
         <Form.Item
           wrapperCol={{

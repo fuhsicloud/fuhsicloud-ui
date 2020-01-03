@@ -1,4 +1,4 @@
-import { Alert, Button, Descriptions, Divider, Select, Tooltip, Form, Input } from 'antd';
+import { Alert, Button, Descriptions, Divider, Select, Tooltip, Form, Input, Radio } from 'antd';
 
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -58,6 +58,33 @@ const Step2: React.FC<Step2Props> = props => {
       });
     }
   };
+  const changeCpuType = (e: { target: { value: string; }; }) => {
+    if (dispatch && data.javaState) {
+      const halfNum = parseInt(e.target.value.substring(2), 0) / 2;
+      if (halfNum >= 1 && halfNum <= 20) {
+        dispatch({
+          type: 'appAndprojectAndcreate/changeCupInfo',
+          payload: {
+            cpuHalfNum: halfNum.toString() + 'g',
+          },
+        });
+      } else if (halfNum === 0.5) {
+        dispatch({
+          type: 'appAndprojectAndcreate/changeCupInfo',
+          payload: {
+            cpuHalfNum: '512m',
+          },
+        });
+      } else if (halfNum > 20) {
+        dispatch({
+          type: 'appAndprojectAndcreate/changeCupInfo',
+          payload: {
+            cpuHalfNum: halfNum.toString() + 'm',
+          },
+        });
+      }
+    }
+  };
 
   const onValidateForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,13 +102,13 @@ const Step2: React.FC<Step2Props> = props => {
       }
     });
   };
-  const { deploymentInfo, language } = data;
+const { language } = data;
   return (
     <Form layout="horizontal" className={styles.stepForm}>
       <Alert
-        closable
+        // closable
         showIcon
-        message="确认转账后，资金将直接打入对方账户，无法退回。"
+        message="不同开发语言对应不同配置信息"
         style={{ marginBottom: 24 }}
       />
       <Descriptions column={1}>
@@ -97,7 +124,7 @@ const Step2: React.FC<Step2Props> = props => {
           <span>
           <Select
             placeholder="golang"
-            style={{ width: 320 }}
+            style={{ width: 260 }}
             value={data.image ? data.image : 'golang'}
             onChange={ onChangeImage }
           >
@@ -134,19 +161,67 @@ const Step2: React.FC<Step2Props> = props => {
       </Form.Item>
       <Form.Item {...formItemLayout} label="项目Git地址">
           <Input.Group compact>
-            <Select defaultValue="alipay" style={{ width: 100 }}>
-              <Option value="alipay">支付宝</Option>
-              <Option value="bank">银行账户</Option>
+            <Select defaultValue="github" style={{ width: 100 }}>
+              <Option value="github">Github</Option>
+              <Option value="gitlab">Gitlab</Option>
+              <Option value="bitbucket">Bitbucket</Option>
             </Select>
-            {getFieldDecorator('receiverAccount', {
-              initialValue: data.receiverAccount,
+            {getFieldDecorator('image', {
+              initialValue: data.gitPath,
               rules: [
-                { required: true, message: '请输入收款人账户' },
-                { type: 'email', message: '账户名应为邮箱格式' },
+                { required: true, message: '请输入项目路径' },
               ],
-            })(<Input style={{ width: 'calc(100% - 100px)' }} placeholder="test@example.com" />)}
+            })(<Input style={{ width: 'calc(100% - 100px)' }} placeholder="fuhsicloud/fuhiscloud.git" />)}
           </Input.Group>
-        </Form.Item>
+      </Form.Item>
+      <Form.Item
+          {...formItemLayout}
+          label="容器规格"
+          help="根据自己需求配置 (CPU:200m/500m/1/2,内存:256Mi/512Mi/2Gi)"
+        >
+        <div>
+          {data.javaState ? getFieldDecorator('resources', {
+            initialValue: '',
+            rules: [{ required: true, message: '请选择容器规格' }],
+          })(
+            <Radio.Group onChange={changeCpuType}>
+              <Radio value="1/512Mi">512M内存</Radio>
+              <Radio value="1/1Gi">1G内存</Radio>
+              <Radio value="2/2Gi">2G内存</Radio>
+              <Radio value="2/4Gi">4G内存</Radio>
+              <Radio value="2/6Gi">6G内存</Radio>
+              <Radio value="2/8Gi">8G内存</Radio>
+              <Radio value="2/10Gi">10G内存</Radio>
+            </Radio.Group>,
+          ) : getFieldDecorator('resources', {
+            initialValue: '',
+            rules: [{ required: true, message: '请选择容器规格' }],
+          })(
+            <Radio.Group onChange={changeCpuType}>
+              <Radio value="100m/64Mi">64M内存</Radio>
+              <Radio value="100m/128Mi">128M内存</Radio>
+              <Radio value="200m/256Mi">256M内存</Radio>
+              <Radio value="500m/512Mi">512M内存</Radio>
+              <Radio value="1/1Gi">1G内存</Radio>
+              <Radio value="2/2Gi">2G内存</Radio>
+              <Radio value="2/4Gi">4G内存</Radio>
+              <Radio value="2/6Gi">6G内存</Radio>
+              <Radio value="2/8Gi">8G内存</Radio>
+            </Radio.Group>,
+          )}
+          {/*<Form.Item {...formItemLayout} label="其他">*/}
+          {/*{getFieldDecorator("other_resources", {*/}
+          {/*initialValue: data.project_name,*/}
+          {/*rules: [*/}
+          {/*{*/}
+          {/*pattern: `^([1-9]{1}[0-9]{2}[m]{1}|[0-9]{1})/{1}[1-9]{1}([0-9]{2}Mi|Gi)$`,*/}
+          {/*message: "请设置正确的容器规格，类似:200m/500Mi 或 1/2Gi",*/}
+          {/*},*/}
+          {/*],*/}
+          {/*})(<Input placeholder="其他: 200m/500Mi 或 1/2Gi"/>)}*/}
+          {/*</Form.Item>*/}
+        </div>
+      </Form.Item>
       <Form.Item {...formItemLayout} label="支付密码" required={false}>
         {getFieldDecorator('password', {
           initialValue: '123456',

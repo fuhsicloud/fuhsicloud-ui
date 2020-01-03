@@ -12,7 +12,7 @@ export interface StateType {
     desc: string;
     portNum: string;
     gitType: string;
-    GitPath: string;
+    gitPath: string;
     GitVersion: string;
     addPort: string;
     jarCommand: string;
@@ -20,6 +20,7 @@ export interface StateType {
     image: string;
     deploymentInfo: string;
     language: string;
+    javaState: boolean;
   };
 
 }
@@ -65,7 +66,7 @@ const Model: ModelType = {
       desc: '',
       portNum: '1',
       gitType: '',
-      GitPath: '',
+      gitPath: '',
       GitVersion: '',
       addPort: '',
       jarCommand: '',
@@ -73,6 +74,7 @@ const Model: ModelType = {
       image: '',
       deploymentInfo: '',
       language: '',
+      javaState: false,
     },
   },
 
