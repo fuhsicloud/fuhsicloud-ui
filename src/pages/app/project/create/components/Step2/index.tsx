@@ -56,6 +56,7 @@ const Step2: React.FC<Step2Props> = props => {
         type: 'appAndprojectAndcreate/changeImageLanguage',
         payload: { image: val },
       });
+      form.setFieldsValue({'image':data.image})
     }
   };
   const changeCpuType = (e: { target: { value: string; }; }) => {
@@ -102,7 +103,6 @@ const Step2: React.FC<Step2Props> = props => {
       }
     });
   };
-const { language } = data;
   return (
     <Form layout="horizontal" className={styles.stepForm}>
       <Alert
@@ -147,8 +147,8 @@ const { language } = data;
             </Option>
           </Select>
             &nbsp;&nbsp;
-            <Tooltip placement="topLeft" title={language ? language : 'Golang'} arrowPointAtCenter>
-              <Button>{language ? language : 'Golang'}</Button>
+            <Tooltip placement="topLeft" title={data.image ? data.image : 'Golang'} arrowPointAtCenter>
+              <Button>{data.image ? data.image : 'Golang'}</Button>
             </Tooltip>
             &nbsp;&nbsp;
             <Tooltip placement="topLeft" title="点击去下载Dockerfile" arrowPointAtCenter>
@@ -166,7 +166,7 @@ const { language } = data;
               <Option value="gitlab">Gitlab</Option>
               <Option value="bitbucket">Bitbucket</Option>
             </Select>
-            {getFieldDecorator('image', {
+            {getFieldDecorator('giturl', {
               initialValue: data.gitPath,
               rules: [
                 { required: true, message: '请输入项目路径' },
