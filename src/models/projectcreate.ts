@@ -155,7 +155,7 @@ const Model: ModelType = {
     },
     changeProjectImage(state, { payload }) {
       var javaState = (payload.image.indexOf('java') == -1) ? false : true;
-      if(!state){
+      if(state){
         state.step.javaState = javaState;
         state.step.image = payload.image;
       }
